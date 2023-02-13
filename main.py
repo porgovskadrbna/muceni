@@ -63,9 +63,12 @@ async def get_files(grades: list[int]) -> dict[str, list[str]]:
 
     for grade in grades:
         files[grade] = []
+
         for file in await os.scandir(f"files/{grade}"):
             if file.is_file() and not file.name.startswith("."):
                 files[grade].append(file.name)
+
+        files[grade].sort()
 
     return files
 
