@@ -3,7 +3,7 @@
   <ul>
     {% for file in files %}
       <li>
-        <a href="/files/{{ grade }}/{{ subject }}_{{ file }}">
+        <a href="/files/{{ grade }}/{{ file }}">
           {% if file[-4:] in [".jpg", ".png"] or file[-5:] in [".jpeg"] %}
             🖼️
           {% else %}
