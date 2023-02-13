@@ -1,0 +1,17 @@
+{% extends "page.jinja" %}
+{% block content %}
+  <ul>
+    {% for file in files %}
+      <a href="/files/{{ grade }}/{{ subject }}_{{ file }}">
+        {% if file[-4:] in [".jpg", ".png"] or file[-5:] in [".jpeg"] %}
+          🖼️
+        {% else %}
+          📄
+        {% endif %}
+        &nbsp;{{ file }}
+      </a>
+    {% else %}
+      😢 Tady zatím nic není…
+    {% endfor %}
+  </ul>
+{% endblock %}

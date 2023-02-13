@@ -1,0 +1,149 @@
+body {
+  background-color: #12171f;
+  color: white;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Roboto Slab", serif;
+}
+
+#main {
+  width: 24em;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 6em 1em;
+}
+
+a {
+  text-decoration: inherit;
+  color: inherit;
+}
+
+li {
+  list-style: none;
+  margin-bottom: 0.5rem;
+}
+
+.gray {
+  color: gray;
+}
+
+big {
+  font-size: 2rem;
+}
+
+header {
+  padding-bottom: 32px;
+  top: 0;
+  z-index: 1;
+}
+
+h1 {
+  font-family: "Bungee";
+  font-size: 36px;
+  color: white;
+}
+
+h1,
+h4 {
+  font-weight: 400;
+}
+
+#links {
+  padding-top: 1em;
+}
+
+#links p {
+  padding-bottom: 0.8em;
+  width: 100%;
+  text-align: center;
+}
+
+#links a {
+  color: grey;
+  border-bottom: 2px dotted grey;
+  padding-bottom: 0.1em;
+}
+
+#links a:hover {
+  border-bottom-style: solid;
+}
+
+/* Stats */
+
+.stats {
+  width: 100%;
+}
+
+.stats label {
+  margin: 0;
+}
+
+.stats h3 {
+  margin: 0.5rem 0 1.5rem 1rem;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.stats h4 {
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.cats {
+  display: grid;
+  margin-left: 1rem;
+  margin-bottom: 2rem;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+}
+
+.cats :nth-child(2n) {
+  text-align: right;
+}
+
+table {
+  width: 100%;
+  margin-bottom: 2rem;
+  padding-left: 1rem;
+}
+
+td:last-of-type {
+  text-align: right;
+}
+
+/* Admin */
+
+.drink-admin {
+  display: flex;
+  flex-direction: row;
+  height: 2.5rem;
+}
+
+.drink-admin p {
+  width: 100%;
+}
+
+.drink-admin .grade {
+  background-color: white;
+  color: #222e3f;
+  padding: 0 0.25em;
+  border-radius: 3px;
+}
+
+.icons {
+  display: flex;
+  gap: 1rem;
+}
+
+.icon {
+  height: 1.5em;
+  filter: invert(1);
+}
+
+.invalid {
+  opacity: 0.4;
+}
