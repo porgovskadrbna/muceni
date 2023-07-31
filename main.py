@@ -129,7 +129,8 @@ async def registration_post(
 ):
     student = None
 
-    csv = requests.get("https://kdotoje.porgazeen.cz/names.csv").text
+    async with client.get("https://kdotoje.porgazeen.cz/names.csv") as resp:
+        csv = await resp.text()
 
     for line in csv.split("\n"):
         if line.startswith("#") or not line:
@@ -149,9 +150,10 @@ async def registration_post(
 
         if first_name == first_name_ and last_name == last_name_:
             student = (int(grad_year), first_name, last_name)
+            break
 
     if student is None:
-        return RedirectResponse("/registrace")
+        return RedirectResponse("/registrace", status_code=303)
 
     token = app.token.token()
 
