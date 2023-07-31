@@ -10,6 +10,10 @@ body {
   font-family: "Roboto Slab", serif;
 }
 
+[x-cloak] {
+  display: none !important;
+}
+
 #main {
   width: 24em;
   max-width: 100%;
@@ -32,7 +36,7 @@ li {
 }
 
 .error {
-  color: #aa0000;
+  color: #ff6666;
 }
 
 header {

@@ -1,27 +1,10 @@
-<div
-  class="email-input"
-  x-data="{ email: $persist(''), first_name: '', last_name: '' }"
->
+<div class="email-input" x-data="emailInput">
   <select
-    @change="
-      [last_name, first_name] = $el.value.split(',')
-      email = $event.target.value
-        .replace(',', '')
-        .toLowerCase()
-        .normalize('NFD')
-        .replace(/\p{Diacritic}/gu, '')
-        + '@porg.cz'"
-    x-init="
-      () => {
-        [last_name, first_name] = $el.value.split(',')
-        email = $el.value
-          .replace(',', '')
-          .toLowerCase()
-          .normalize('NFD')
-          .replace(/\p{Diacritic}/gu, '')
-          + '@porg.cz'
-      }"
+    style="margin-bottom: 0.5rem"
+    x-model="name"
+    @change="setValues($event.target.value)"
   >
+    <option value="" disabled>Najdi se v seznamu</option>
     {% for grad_year, students in people | dictsort(reverse=True) %}
       <optgroup label="{{ grad_year }}">
         {% for person in students %}
@@ -32,8 +15,47 @@
       </optgroup>
     {% endfor %}
   </select>
-  <p x-if="email" x-text="email"></p>
-  <input type="hidden" name="email" x-model="email">
+  <template x-if="email">
+    <p x-text="email"></p>
+  </template>
+  <input type="hidden" name="email" x-model="email" minlength="9" required>
   <input type="hidden" name="first_name" x-model="first_name">
   <input type="hidden" name="last_name" x-model="last_name">
 </div>
+<script>
+  document.addEventListener('alpine:init', () => {
+    Alpine.data('emailInput', function () {
+      return {
+        email: '',
+        first_name: this.$persist(''),
+        last_name: this.$persist(''),
+        name: this.$persist(''),
+
+        setValues(name) {
+          nameSegments = name.split(',')
+
+          console.log(name)
+
+          if (nameSegments.length !== 2) {
+            this.last_name = ''
+            this.first_name = ''
+            this.email = ''
+            return
+          }
+
+          [this.first_name, this.last_name] = nameSegments
+          this.email = name
+            .replace(',', '')
+            .toLowerCase()
+            .normalize('NFD')
+            .replace(/\p{Diacritic}/gu, '')
+            + '@porg.cz'
+        },
+
+        init() {
+          this.setValues(this.name)
+        },
+      }
+    })
+  })
+</script>
