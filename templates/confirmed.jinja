@@ -1,0 +1,18 @@
+{% extends "page.jinja" %}
+{% block content %}
+  {% if token %}
+    <form
+      action="/je-safe"
+      method="post"
+      x-data="{ password: '', password2: '' }"
+    >
+      <input type="hidden" name="token" value="{{ token }}">
+      <input type="password" name="password" x-model="password" placeholder="Tu heslo">
+      <input type="password" name="password2" x-model="password2" placeholder="Aj tu ještě pro sicher">
+      <p x-show="password != password2 && password2 !== ''">Však máš každý jiný!</p>
+      <p><input type="submit" value="Vytvoř heslo" :disabled="password != password2 || !password || !password2"></p>
+    </form>
+  {% else %}
+    <h2>Wtf, kámo… co děláš?</h2>
+  {% endif %}
+{% endblock %}

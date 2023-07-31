@@ -1,0 +1,39 @@
+<div
+  class="email-input"
+  x-data="{ email: $persist(''), first_name: '', last_name: '' }"
+>
+  <select
+    @change="
+      [last_name, first_name] = $el.value.split(',')
+      email = $event.target.value
+        .replace(',', '')
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/\p{Diacritic}/gu, '')
+        + '@porg.cz'"
+    x-init="
+      () => {
+        [last_name, first_name] = $el.value.split(',')
+        email = $el.value
+          .replace(',', '')
+          .toLowerCase()
+          .normalize('NFD')
+          .replace(/\p{Diacritic}/gu, '')
+          + '@porg.cz'
+      }"
+  >
+    {% for grad_year, students in people | dictsort(reverse=True) %}
+      <optgroup label="{{ grad_year }}">
+        {% for person in students %}
+          <option value="{{ person.last_name }},{{ person.first_name }}">
+            {{ person.last_name }} {{ person.first_name }}
+          </option>
+        {% endfor %}
+      </optgroup>
+    {% endfor %}
+  </select>
+  <p x-if="email" x-text="email"></p>
+  <input type="hidden" name="email" x-model="email">
+  <input type="hidden" name="first_name" x-model="first_name">
+  <input type="hidden" name="last_name" x-model="last_name">
+</div>

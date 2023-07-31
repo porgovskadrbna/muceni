@@ -1,13 +1,159 @@
 {% extends "page.jinja" %}
+{% block header %}
+  <div class="actions">
+    <a href="/profile" role="button">
+      <img class="icon icon-inline" src="/static/icons/user.svg" alt="Profil">
+      Profil
+    </a>
+    <a href="/upload" role="button">
+      <img class="icon icon-inline" src="/static/icons/upload.svg" alt="Nahrát soubor">
+      Nahrát soubor
+    </a>
+  </div>
+{% endblock %}
 {% block content %}
-  <ul>
-    <li><a href="/1">1️⃣&nbsp;&nbsp;Prima</a></li>
-    <li><a href="/2">2️⃣&nbsp;&nbsp;Sekunda</a></li>
-    <li><a href="/3">3️⃣&nbsp;&nbsp;Tercie</a></li>
-    <li><a href="/4">4️⃣&nbsp;&nbsp;Kvarta</a></li>
-    <li><a href="/5">5️⃣&nbsp;&nbsp;Kvinta</a></li>
-    <li><a href="/6">6️⃣&nbsp;&nbsp;Sexta</a></li>
-    <li><a href="/7">7️⃣&nbsp;&nbsp;Septima</a></li>
-    <li><a href="/8">8️⃣&nbsp;&nbsp;Oktáva</a></li>
-  </ul>
+  <div class="subject-input" x-data="homepage">
+    <h2>Nahrané soubory</h2><br>
+
+    <select name="grade" x-model="grade">
+      <option value="0" selected>Všechny ročníky</option>
+      <option value="1">Prima</option>
+      <option value="2">Sekunda</option>
+      <option value="3">Tercie</option>
+      <option value="4">Kvarta</option>
+      <option value="5">Kvinta</option>
+      <option value="6">Sexta</option>
+      <option value="7">Septima</option>
+      <option value="8">Oktáva</option>
+    </select>
+    <select name="subject" x-model="subject">
+      <option value="" selected>Všechny předměty</option>
+      <template x-for="[code, subject] in Object.entries(subjects)" :key="subject['name']">
+        <option
+          :value="code"
+          :disabled="!(!parseInt(grade) || subject['grades'].includes(grade))"
+          x-text="subject['emoji'] + ' ' + subject['name']"
+        ></option>
+      </template>
+    </select>
+    <input type="text" x-model="search" placeholder="Hledat">
+
+    <hr>
+
+    <div class="files">
+      <template x-for="file in files" :key="file['id']">
+        <span
+          class="file"
+          x-show="
+            (grade === '0' || file['grade'] === parseInt(grade))
+              && (subject === '' || file['subject'] === subject)
+              && (search === '' || fuzzy(file['name'], search))"
+        >
+          <div>
+            <div x-text="file['name'] + ' ' + (['jpeg', 'jpg', 'png', 'webp'].includes(file['filename'].split('.').slice(-1)[0]) ? ' 🖼️' : ' 📄')"></div>
+            <div class="icons">
+              <big
+                x-text="file['score']"
+                :style="{ color: file['score'] > 0 ? '#ffaa00' : file['score'] < 0 ? '#9999ff' : 'inherit' }">
+              </big>
+
+              <span
+                target="_blank"
+                class="upvote"
+                :class="{ 'active': votes[file['filename']] === 1 }"
+                @click="await vote(file, 1)"
+              >
+                <img
+                  src="/static/icons/upvote.svg"
+                  class="icon"
+                  alt="Upvote"
+                >
+              </span>
+
+              <span
+                target="_blank"
+                class="downvote"
+                :class="{ 'active': votes[file['filename']] === -1 }"
+                @click="await vote(file, -1)"
+              >
+                <img
+                  src="/static/icons/downvote.svg"
+                  class="icon"
+                  alt="Downvote"
+                >
+              </span>
+
+              <a :href="'/files/' + file['filename']" target="_blank">
+                <img class="icon" src="/static/icons/download.svg" alt="Stáhnout" width="16" height="16">
+              </a>
+            </div>
+          </div>
+          <kbd x-text="file['grade']"></kbd>
+          ·
+          <span x-text="subjects[file['subject']]['emoji'] + ' ' + subjects[file['subject']]['name']"></span>
+        </span>
+      </template>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('alpine:init', () => {
+      Alpine.data('homepage', function () {
+        return {
+          grade: this.$persist(0),
+          subjects: {{ subjects | safe }},
+          subject: this.$persist(''),
+          files: {{ files | safe }},
+          search: this.$persist(''),
+          votes: {{ votes | safe }},
+
+          init () {
+            Object.fromEntries(
+              Object
+                .entries(this.subjects)
+                .map($ => $[1].grades = $[1].grades.map(g => g.toString()))
+            )
+          },
+
+          fuzzy (str, pattern) {
+            return (new RegExp(pattern.split("").join(".*"))).test(str)
+          },
+
+          async unvote (file, vote) {
+            await fetch(`/unvote/${file.filename}`)
+
+            file['score'] -= this.votes[file.filename]
+
+            this.votes = {
+              ...this.votes,
+              [file.filename]: 0
+            }
+          },
+
+          async vote (file, vote) {
+            if (vote === this.votes[file.filename]) {
+              await this.unvote(file, vote)
+            } else {
+              if (this.votes[file.filename] !== 0) {
+                await this.unvote(file, vote)
+              }
+
+              await fetch(`/${
+                (vote === 1)
+                  ? 'upvote'
+                  : 'downvote'
+              }/${file.filename}`)
+
+              this.votes = {
+                ...this.votes,
+                [file.filename]: vote
+              }
+
+              file['score'] += vote
+            }
+          }
+        }
+      })
+    })
+  </script>
 {% endblock %}

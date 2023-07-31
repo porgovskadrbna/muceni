@@ -1,0 +1,26 @@
+{% extends "page.jinja" %}
+{% block content %}
+  <h2>{{ user.first_name }} {{ user.last_name }}</h2>
+  <p class="gray">{{ user.email }}</p>
+
+  <h3 style="margin-bottom: 0.5rem">{{ likes }} {% if likes == 1 %}upvote{% else %}upvotů{% endif %}</h3>
+  {% if likes %}
+    <p class="gray">Tolikrát už lidi zcenili tvoje materiály! 🚀</p>
+  {% endif %}
+
+  <a href="/logout" role="button" style="display: block; width: 100%; text-align: center">Odhlásit se</a>
+
+  {% for file in files %}
+    <b style="margin-bottom: 0.5rem">Moje soubory:</b>
+
+    <span class="admin-file">
+      <kbd>{{ file.name }}</kbd>
+      <a href="/profile/delete/{{ file.filename }}">
+        <img class="icon" src="/static/icons/trash.svg" alt="Smazat">
+      </a>
+    </span>
+  {% else %}
+    <p>Hey-yo, fellow studente! Nechceš taky něco nahrát?</p>
+    <a href="/upload" class="gray" style="border-bottom: 2px dotted grey">Můžeš tady!</a>
+  {% endfor %}
+{% endblock %}

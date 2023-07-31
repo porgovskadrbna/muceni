@@ -1,0 +1,32 @@
+<div
+  class="subject-input"
+  x-data="{ grade: 0, subjects: {{ subjects }} }"
+  x-init="
+    Object.fromEntries(
+      Object
+        .entries(subjects)
+        .map($ => $[1].grades = $[1].grades.map(g => g.toString()))
+    )"
+>
+  <select name="grade" x-model="grade">
+    <option disabled selected value="0">Vyber třídu</option>
+    <option value="1">Prima</option>
+    <option value="2">Sekunda</option>
+    <option value="3">Tercie</option>
+    <option value="4">Kvarta</option>
+    <option value="5">Kvinta</option>
+    <option value="6">Sexta</option>
+    <option value="7">Septima</option>
+    <option value="8">Oktáva</option>
+  </select>
+  <select name="subject" :disabled="!grade">
+    <option disabled selected>Vyber předmět</option>
+    <template x-for="[code, subject] in Object.entries(subjects)" :key="subject['name']">
+      <option
+        :value="code"
+        :disabled="!subject['grades'].includes(grade)"
+        x-text="subject['emoji'] + ' ' + subject['name']"
+      ></option>
+    </template>
+  </select>
+</div>

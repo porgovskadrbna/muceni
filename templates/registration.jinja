@@ -1,0 +1,10 @@
+{% extends "page.jinja" %}
+{% block content %}
+  <form
+    action="/registrace"
+    method="post"
+  >
+    {% include "inputs/email.jinja" %}
+    <p><input type="submit" value="Registrovat"></p>
+  </form>
+{% endblock %}

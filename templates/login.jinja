@@ -1,0 +1,23 @@
+{% extends "page.jinja" %}
+{% block content %}
+  <form action="/login" method="post">
+    {% if error %}
+      <p class="error">{{ error }}</p>
+    {% endif %}
+    {% include "inputs/email.jinja" %}
+    <input type="password" name="password" placeholder="Heslo">
+    <input type="submit" value="Přihlásit">
+  </form>
+
+  <hr>
+
+  <p class="gray" style="text-align: center">
+    <small>
+      Pokud seš absent-minded intellectual a zapomněl sis svoje
+      heslo, tak se stačí znova zaragistrovat.
+    </small>
+  </p>
+  <div class="actions">
+    <a href="/registrace" role="button" style="color: white; margin: 0 auto">Registrovat</a>
+  </div>
+{% endblock %}

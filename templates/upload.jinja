@@ -1,0 +1,16 @@
+{% extends "page.jinja" %}
+{% block content %}
+  <form action="/upload" method="post" enctype="multipart/form-data">
+    <input type="file" name="file">
+    {% include "inputs/subject.jinja" %}
+    <input
+      type="text"
+      name="name"
+      pattern="[a-z0-9_]+"
+      minlength="2"
+      placeholder="Název"
+    >
+    <p class="gray">Pls jenom malý písmena, čísla a podtržítka, ďk</p>
+    <input type="submit" value="Nahrát">
+  </form>
+{% endblock %}
