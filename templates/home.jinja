@@ -122,7 +122,7 @@
           async unvote (file, vote) {
             await fetch(`/unvote/${file.filename}`)
 
-            file['score'] -= this.votes[file.filename]
+            file['score'] -= this.votes[file.filename] || 0
 
             this.votes = {
               ...this.votes,
@@ -149,7 +149,7 @@
                 [file.filename]: vote
               }
 
-              file['score'] += vote
+              file['score'] += parseInt(vote)
             }
           }
         }
