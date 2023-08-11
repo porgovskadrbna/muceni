@@ -1,3 +1,4 @@
+import os
 import smtplib
 from email.message import EmailMessage
 
@@ -23,5 +24,5 @@ def send_confirmation_email(email: str, link: str):
     msg.set_content(body(link), subtype="html", charset="utf-8")
 
     with smtplib.SMTP_SSL("smtp.seznam.cz", 465) as server:
-        server.login("muceni@porgovskadrbna.cz", "tomvlcikjegej")
+        server.login("muceni@porgovskadrbna.cz", os.getenv("EMAIL_PASSWORD"))
         server.send_message(msg, "muceni@porgovskadrbna.cz", email)
