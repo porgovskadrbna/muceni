@@ -45,14 +45,14 @@
     <hr>
 
     <div class="files">
-      <template x-for="file in files" :key="file['id']">
+      <template x-for="file in files" :key="file['filename']">
         <span
           class="file"
           x-show="
             (showTrash || !(file['score'] < -3))
-              && (grade === '0' || file['grade'] === parseInt(grade))
-              && (subject === '' || file['subject'] === subject)
-              && (search === '' || fuzzy(file['name'], search))"
+              && ((grade === '0') || (file['grade'] === parseInt(grade)))
+              && ((subject === '') || file['subject'] === subject)
+              && ((search === '') || fuzzy(file['name'], search))"
         >
           <div>
             <div x-text="file['name'] + ' ' + (['jpeg', 'jpg', 'png', 'webp'].includes(file['filename'].split('.').slice(-1)[0]) ? ' 🖼️' : ' 📄')"></div>

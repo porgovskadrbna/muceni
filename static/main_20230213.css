@@ -186,6 +186,7 @@ kbd {
   background-color: #222e3f;
   border-radius: 0.25em;
   padding: 0.6rem 0.8rem;
+  margin-bottom: 1rem;
 }
 
 .file div:first-of-type {

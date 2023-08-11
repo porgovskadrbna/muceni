@@ -23,12 +23,12 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from passlib.hash import bcrypt
-from sqlalchemy import delete, select, func
+from sqlalchemy import delete, func, select
 from sqlalchemy.orm import Session
 
 import app.confirmation
-import app.token
 import app.orm
+import app.token
 import db
 from config import SUBJECTS
 from models import File, Registration, User, Vote
@@ -495,5 +495,7 @@ async def delete_file(filename: str, request: Request):
         )
 
         await session.commit()
+
+    await os.remove("files/" + filename)
 
     return RedirectResponse("/profile", status_code=303)
