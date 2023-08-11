@@ -140,6 +140,13 @@ input {
   width: 100%;
 }
 
+input[type="checkbox"] {
+  width: 1rem;
+  height: 1rem;
+  appearance: checkbox;
+  margin-right: 0.5rem;
+}
+
 kbd {
   color: #222e3f;
   display: inline-block;

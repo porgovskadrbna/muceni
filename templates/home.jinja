@@ -37,6 +37,10 @@
       </template>
     </select>
     <input type="text" x-model="search" placeholder="Hledat">
+    <label>
+      <input type="checkbox" x-model="showTrash">
+      Ukázat trash
+    </label>
 
     <hr>
 
@@ -45,7 +49,8 @@
         <span
           class="file"
           x-show="
-            (grade === '0' || file['grade'] === parseInt(grade))
+            (showTrash || !(file['score'] < -3))
+              && (grade === '0' || file['grade'] === parseInt(grade))
               && (subject === '' || file['subject'] === subject)
               && (search === '' || fuzzy(file['name'], search))"
         >
@@ -106,6 +111,7 @@
           files: {{ files | safe }},
           search: this.$persist(''),
           votes: {{ votes | safe }},
+          showTrash: this.$persist(false),
 
           init () {
             Object.fromEntries(
@@ -149,7 +155,7 @@
                 [file.filename]: vote
               }
 
-              file['score'] += parseInt(vote)
+              file['score'] += vote
             }
           }
         }
