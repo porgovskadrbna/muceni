@@ -189,15 +189,18 @@ kbd {
   margin-bottom: 1rem;
 }
 
-.file div:first-of-type {
+.file > div:first-of-type {
   color: white;
   margin-bottom: 0.5rem;
   display: flex;
   justify-content: space-between;
+  gap: 1rem;
 }
 
-.file div div {
+.file div div:first-of-type {
   display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .file:not(:first-child) {

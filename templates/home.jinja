@@ -55,7 +55,7 @@
               && ((search === '') || fuzzy(file['name'], search))"
         >
           <div>
-            <div x-text="file['name'] + ' ' + (['jpeg', 'jpg', 'png', 'webp'].includes(file['filename'].split('.').slice(-1)[0]) ? ' 🖼️' : ' 📄')"></div>
+            <div x-text="(['jpeg', 'jpg', 'png', 'webp'].includes(file['filename'].split('.').slice(-1)[0]) ? ' 🖼️' : ' 📄') + ' ' + file['name']"></div>
             <div class="icons">
               <big
                 x-text="file['score']"
